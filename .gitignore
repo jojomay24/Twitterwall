@@ -1,0 +1,6 @@
+log/
+tmp/*
+twitter4j.properties
+.classpath
+.project
+bin/
