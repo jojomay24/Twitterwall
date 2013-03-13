@@ -12,7 +12,7 @@ import org.quartz.impl.StdSchedulerFactory;
  * @author Alexander Kahl
  * @since March 2013
  * @version 1.0.0
- * 
+ *
  */
 public class JobScheduler {
 
@@ -20,7 +20,7 @@ public class JobScheduler {
      * Date should be formatted as YYYY-MM-DD
      */
     public final static String EARLIEST_DATE = "2013-03-10";
-    public final static int INTERVAL_SEC = 10;
+    public final static int INTERVAL_SEC = 15;
 
     public static void main(String[] args) {
 
