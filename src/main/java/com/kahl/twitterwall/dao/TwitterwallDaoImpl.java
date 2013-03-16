@@ -1,4 +1,4 @@
-package com.kahl.twitterwall.service;
+package com.kahl.twitterwall.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -7,19 +7,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Repository;
 
 import com.kahl.twitterwall.entity.Tweet;
 import com.kahl.twitterwall.entity.TwitterUser;
 
-public class DatabaseConnectionServiceMysqlImpl implements DatabaseConnectionService {
+@Repository
+public class TwitterwallDaoImpl implements TwitterwallDao {
 
-    private Logger log = Logger.getLogger(DatabaseConnectionServiceMysqlImpl.class);
+    private Logger log = Logger.getLogger(TwitterwallDaoImpl.class);
 
     public final String DB_CONNECTION = "jdbc:mysql://localhost/Twitterwall";
     public final String DB_USER = "Twitterwall";
     public final String DB_PASSWORD = "Twitterwall123";
     public final String DB_DRIVER = "com.mysql.jdbc.Driver";
-
 
     @Override
     public void saveTweetToDb(Tweet tweet) {
@@ -44,8 +45,7 @@ public class DatabaseConnectionServiceMysqlImpl implements DatabaseConnectionSer
         System.out.println("Writing Tweet to DB");
         writeTweetToDb(tweet);
         System.out.println("Finished Writing");
-      }
-
+    }
 
     private int getPrimaryKeyForTwitterUser(TwitterUser twitterUser) {
         Connection dbConnection = getDBConnection();
@@ -53,7 +53,7 @@ public class DatabaseConnectionServiceMysqlImpl implements DatabaseConnectionSer
         int foundId = -1;
 
         String selectSQL = "SELECT id FROM TwitterUser WHERE name = ? and profileImageUrl = ?";
-    //    String selectSQL = "SELECT id FROM TwitterUser WHERE name = ?";
+        // String selectSQL = "SELECT id FROM TwitterUser WHERE name = ?";
         try {
             prepSt1 = dbConnection.prepareStatement(selectSQL);
             prepSt1.setString(1, twitterUser.getName());
@@ -80,7 +80,7 @@ public class DatabaseConnectionServiceMysqlImpl implements DatabaseConnectionSer
         try {
             dbConnection = getDBConnection();
 
-            prepSt1 = dbConnection.prepareStatement(insertTwitterUserSQL,PreparedStatement.RETURN_GENERATED_KEYS);
+            prepSt1 = dbConnection.prepareStatement(insertTwitterUserSQL, PreparedStatement.RETURN_GENERATED_KEYS);
             prepSt1.setString(1, twitterUser.getName());
             prepSt1.setString(2, twitterUser.getProfileImageUrl());
             prepSt1.executeUpdate();
@@ -126,7 +126,7 @@ public class DatabaseConnectionServiceMysqlImpl implements DatabaseConnectionSer
             prepSt1.setString(2, tweet.getText());
             prepSt1.setTimestamp(3, new java.sql.Timestamp(tweet.getCreatedAt().getTime()));
             prepSt1.setInt(4, tweet.getTwitterUser().getId());
-            prepSt1.setString(5,"" + tweet.getAckState());
+            prepSt1.setString(5, "" + tweet.getAckState());
             prepSt1.executeUpdate();
             dbConnection.commit();
 
@@ -169,4 +169,3 @@ public class DatabaseConnectionServiceMysqlImpl implements DatabaseConnectionSer
     }
 
 }
-

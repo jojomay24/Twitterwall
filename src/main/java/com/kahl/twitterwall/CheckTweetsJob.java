@@ -1,9 +1,12 @@
+package com.kahl.twitterwall;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import twitter4j.Query;
 import twitter4j.QueryResult;
@@ -14,9 +17,9 @@ import twitter4j.TwitterFactory;
 
 import com.kahl.twitterwall.entity.Tweet;
 import com.kahl.twitterwall.entity.TwitterUser;
-import com.kahl.twitterwall.service.DatabaseConnectionService;
-import com.kahl.twitterwall.service.DatabaseConnectionServiceMysqlImpl;
+import com.kahl.twitterwall.service.TwitterService;
 
+@Component
 public class CheckTweetsJob implements Job {
 
    private Logger log = Logger.getLogger(CheckTweetsJob.class);
@@ -26,7 +29,6 @@ public class CheckTweetsJob implements Job {
    public static long lastSinceId = -1;
    public static boolean isRunning = false; //TODO Thread safe machen!
 
-   public DatabaseConnectionService dbService = new DatabaseConnectionServiceMysqlImpl();
 
    private Query buildQuery() {
        Query q = new Query(SEARCH_STRING);
@@ -76,7 +78,9 @@ public void execute(JobExecutionContext jExeCtx) throws JobExecutionException {
 
                    maxId = (maxId < tweetObj.getTweetId() ) ? tweetObj.getTweetId() : maxId;
 
-                   dbService.saveTweetToDb(tweetObj);
+                   // Instanzvariable kann aufgrund von Erzeugung der Objekte nicht verwendet werden!
+                   TwitterService ts = (TwitterService)Twitterwall.ctx.getBean("twitterServiceImpl");
+                   ts.saveTweetToDb(tweetObj);
                }
            } while ((query = result.nextQuery()) != null);
            lastSinceId = ( maxId != -1 ) ? maxId : lastSinceId;
