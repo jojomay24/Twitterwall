@@ -4,3 +4,8 @@ twitter4j.properties
 .classpath
 .project
 bin/
+*.class
+# Package Files #
+*.jar
+*.war
+*.ear
