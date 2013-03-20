@@ -23,18 +23,16 @@ import com.kahl.twitterwall.service.TwitterService;
 public class CheckTweetsJob implements Job {
 
    private Logger log = Logger.getLogger(CheckTweetsJob.class);
-   public static String SEARCH_STRING = "#test";
-//   public static String SEARCH_STRING = "from:ErnaTestibus";
 
    public static long lastSinceId = -1;
    public static boolean isRunning = false; //TODO Thread safe machen!
 
 
    private Query buildQuery() {
-       Query q = new Query(SEARCH_STRING);
+       Query q = new Query(Twitterwall.SEARCH_STRING);
 
-       if (!(JobScheduler.EARLIEST_DATE.isEmpty())) {
-           q.setSince(JobScheduler.EARLIEST_DATE);
+       if (!(Twitterwall.TWEETS_SEARCH_EARLIEST_DATE.isEmpty())) {
+           q.setSince(Twitterwall.TWEETS_SEARCH_EARLIEST_DATE);
        }
 
        if ( lastSinceId != -1) {

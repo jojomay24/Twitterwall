@@ -27,12 +27,6 @@ public class JobScheduler {
 
     private static Logger log = Logger.getLogger(JobScheduler.class);
 
-    /**
-     * Date should be formatted as YYYY-MM-DD
-     */
-    public final static String EARLIEST_DATE = "2013-03-10";
-    public final static int INTERVAL_SEC = 15;
-
     private Scheduler sch;
     private JobDetail job;
     private Trigger trigger;
@@ -46,7 +40,7 @@ public class JobScheduler {
         // specify the running period of the job
         trigger = TriggerBuilder.newTrigger()
                 .withSchedule(SimpleScheduleBuilder.simpleSchedule()
-                        .withIntervalInSeconds(INTERVAL_SEC)
+                        .withIntervalInSeconds(Twitterwall.TWEETS_SEARCH_INTERVAL)
                         .repeatForever())
                 .build();
     }

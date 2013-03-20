@@ -11,6 +11,17 @@ import com.kahl.twitterwall.rest.GrizzlyServer;
 @Service
 public class Twitterwall {
 
+    public static String SEARCH_STRING = "#test";
+
+    /** nr of seconds between querying Twitter for new results */
+    public final static int TWEETS_SEARCH_INTERVAL = 15;
+
+    /** Date should be formatted as YYYY-MM-DD */
+    public final static String TWEETS_SEARCH_EARLIEST_DATE = "2013-03-10";
+
+    public static boolean GRAB_TWEETS = false;
+    public static boolean START_WEB_SERVER = true;
+
     private Logger log = Logger.getLogger(Twitterwall.class);
 
     @Autowired
@@ -23,11 +34,6 @@ public class Twitterwall {
                 new ClassPathXmlApplicationContext("spring.xml");
         Twitterwall.ctx = ctx;
 
-//        String[] names = ctx.getBeanDefinitionNames();
-//        for (String name : names) {
-//            System.out.println("Found name: " + name);
-//        }
-
         Twitterwall twitterW = (Twitterwall) ctx.getBean("twitterwall");
         twitterW.start();
     }
@@ -35,9 +41,12 @@ public class Twitterwall {
     public void start() {
         log.info("Initializing Spring Container");
 
-        log.info("Starting Twitterwall");
-//         scheduler.startTwitterScheduler();
-         startGrizzlyServer();
+        log.info("Starting Twitterwall:");
+        if (GRAB_TWEETS) {
+        }
+        if (START_WEB_SERVER) {
+            startGrizzlyServer();
+        }
     }
 
     private void startGrizzlyServer() {

@@ -2,6 +2,7 @@ package com.kahl.twitterwall.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
@@ -63,7 +64,6 @@ public class TwitterwallDaoImpl implements TwitterwallDao {
         Tweet result = (Tweet) q.uniqueResult();
         session.close();
 
-        log.debug("FOUND " + result.toString());
         return result;
     }
 
@@ -84,6 +84,25 @@ public class TwitterwallDaoImpl implements TwitterwallDao {
         session.close();
 
         return resultList;
+    }
+
+    @Override
+    public void ackTweetsByTweetId(Map<Long, Integer> ackMap) {
+        Session session = sessionFactory.openSession();
+
+        for (Map.Entry<Long, Integer> entry : ackMap.entrySet()) {
+            Tweet t = getTweetByTwitterId(entry.getKey());
+            if (t == null) {
+                log.warn("Could not update ackState for Tweet with twitterId [" + entry.getKey() +"] : No Tweet found!");
+                continue;
+            }
+            log.info("Setting ackState [ " + entry.getValue() + "] for tweetId [" + entry.getKey() + "]");
+            t.setAckState(entry.getValue());
+            session.saveOrUpdate(t);
+            session.flush();
+        }
+
+        session.close();
     }
 
 }

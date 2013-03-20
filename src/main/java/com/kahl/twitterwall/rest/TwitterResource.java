@@ -1,14 +1,19 @@
 package com.kahl.twitterwall.rest;
 
 import java.util.List;
+import java.util.Map;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import org.apache.log4j.Logger;
 
 import com.kahl.twitterwall.Twitterwall;
 import com.kahl.twitterwall.entity.Tweet;
@@ -16,6 +21,8 @@ import com.kahl.twitterwall.service.TwitterService;
 
 @Path("/twitter")
 public class TwitterResource {
+
+    private Logger log = Logger.getLogger(TwitterResource.class);
 
     public TwitterResource() {
         twitterService = (TwitterService) Twitterwall.ctx.getBean("twitterServiceImpl");
@@ -39,19 +46,23 @@ public class TwitterResource {
                 .entity(t).build();
     }
 
-//    @PUT
-//    @Path("/ack")
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    public void ackTweets()
-//
-//
+    @PUT
+    @Path("/ack")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public void ackTweets(Map<Long,Integer> ackMap) {
+        log.info("ackTweets called: ackMap size: " + ackMap.size());
+
+        twitterService.ackTweetsByTweetId(ackMap);
+    }
+
+
     @GET
-//    @Produces(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/tweet")
     public Response getTweet(
             @DefaultValue("0") @QueryParam("tweetId") long tweetId)
     {
+        log.info("getTweet called: tweetId:" + tweetId);
         String resultString = "";
         Tweet t = twitterService.getTweetFromDb(tweetId);
         if (t == null) {
@@ -71,6 +82,7 @@ public class TwitterResource {
             @DefaultValue("-1") @QueryParam("minTweetId") long minTweetId,
             @DefaultValue("-1") @QueryParam("ackState") int ackState)
     {
+        log.info("getTweets called: minTweetId: " + minTweetId + ",ackState:" + ackState);
         String resultString = "";
         List<Tweet> l = twitterService.getTweetsByFilter(minTweetId,ackState);
         if (l.isEmpty()) {

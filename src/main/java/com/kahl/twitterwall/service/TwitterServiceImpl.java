@@ -2,6 +2,7 @@ package com.kahl.twitterwall.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,12 @@ public class TwitterServiceImpl implements TwitterService {
     @Override
     public void saveTweetToDb(Tweet tweet) {
         dao.saveTweetToDb(tweet);
+    }
+
+    @Override
+    public void ackTweetsByTweetId(Map<Long, Integer> ackMap) {
+        dao.ackTweetsByTweetId(ackMap);
+
     }
 
 }
