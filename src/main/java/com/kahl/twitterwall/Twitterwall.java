@@ -27,6 +27,7 @@ public class Twitterwall {
 //        for (String name : names) {
 //            System.out.println("Found name: " + name);
 //        }
+
         Twitterwall twitterW = (Twitterwall) ctx.getBean("twitterwall");
         twitterW.start();
     }
@@ -35,7 +36,7 @@ public class Twitterwall {
         log.info("Initializing Spring Container");
 
         log.info("Starting Twitterwall");
-         scheduler.startTwitterScheduler();
+//         scheduler.startTwitterScheduler();
          startGrizzlyServer();
     }
 

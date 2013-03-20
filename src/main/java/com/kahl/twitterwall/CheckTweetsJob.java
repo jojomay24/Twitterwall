@@ -80,6 +80,7 @@ public void execute(JobExecutionContext jExeCtx) throws JobExecutionException {
 
                    // Instanzvariable kann aufgrund von Erzeugung der Objekte nicht verwendet werden!
                    TwitterService ts = (TwitterService)Twitterwall.ctx.getBean("twitterServiceImpl");
+                   log.info("Saving Tweet!");
                    ts.saveTweetToDb(tweetObj);
                }
            } while ((query = result.nextQuery()) != null);
