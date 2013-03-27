@@ -43,6 +43,8 @@ public class Twitterwall {
 
         log.info("Starting Twitterwall:");
         if (GRAB_TWEETS) {
+            scheduler = new JobScheduler();
+            scheduler.startTwitterScheduler();
         }
         if (START_WEB_SERVER) {
             startGrizzlyServer();
@@ -50,8 +52,12 @@ public class Twitterwall {
     }
 
     private void startGrizzlyServer() {
+        try {
         Thread t = new Thread(new GrizzlyServer());
         t.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

@@ -24,12 +24,14 @@ public class GrizzlyServer implements Runnable{
     }
 
     private static URI getBaseURI() {
-        return UriBuilder.fromUri("http://localhost/").port(9998).build();
+//        return UriBuilder.fromUri("http://localhost/").port(9998).build();
+        return UriBuilder.fromUri("http://192.168.1.52/").port(9998).build();
     }
 
     protected static HttpServer startServer() throws IOException {
         System.out.println("Starting grizzly...");
         ResourceConfig rc = new PackagesResourceConfig("com.sun.jersey.samples.helloworld.resources", "com.kahl.twitterwall.rest");
+        rc.getContainerResponseFilters().add(new CORSFilter());
         rc.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, true);
         return GrizzlyServerFactory.createHttpServer(BASE_URI, rc);
     }

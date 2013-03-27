@@ -7,9 +7,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 
 
-//@XmlRootElement
+@XmlRootElement
 @Entity
 @Table(name = "Tweet")
 public class Tweet {
@@ -19,7 +20,7 @@ public class Tweet {
     private int id;
 
     private java.util.Date createdAt;
-    private long tweetId;
+    private String tweetId;
     private int ackState = 0;
     private String text;
 
@@ -46,10 +47,10 @@ public class Tweet {
     public void setCreatedAt(java.util.Date createdAt) {
         this.createdAt = createdAt;
     }
-    public long getTweetId() {
+    public String getTweetId() {
         return tweetId;
     }
-    public void setTweetId(long tweetId) {
+    public void setTweetId(String tweetId) {
         this.tweetId = tweetId;
     }
     public int getAckState() {

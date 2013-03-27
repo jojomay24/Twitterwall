@@ -9,10 +9,10 @@ public interface TwitterService {
 
     public void saveTweetToDb(Tweet tweet);
 
-    public Tweet getTweetFromDb(long tweetDbId);
+    public Tweet getTweetFromDb(String tweetDbId);
 
     public List<Tweet> getTweetsByFilter(long minTweetId, int ackState);
 
-    public void ackTweetsByTweetId(Map<Long, Integer> ackMap);
+    public void ackTweetsByTweetId(Map<String, Integer> ackMap);
 
 }

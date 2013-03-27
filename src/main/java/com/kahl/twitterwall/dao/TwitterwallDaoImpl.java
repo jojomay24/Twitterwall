@@ -57,7 +57,7 @@ public class TwitterwallDaoImpl implements TwitterwallDao {
     }
 
     @Override
-    public Tweet getTweetByTwitterId(long id) {
+    public Tweet getTweetByTwitterId(String id) {
         Session session = sessionFactory.openSession();
         Query q = session.createQuery("From Tweet where tweetId = " + id);
 
@@ -87,10 +87,10 @@ public class TwitterwallDaoImpl implements TwitterwallDao {
     }
 
     @Override
-    public void ackTweetsByTweetId(Map<Long, Integer> ackMap) {
+    public void ackTweetsByTweetId(Map<String, Integer> ackMap) {
         Session session = sessionFactory.openSession();
 
-        for (Map.Entry<Long, Integer> entry : ackMap.entrySet()) {
+        for (Map.Entry<String, Integer> entry : ackMap.entrySet()) {
             Tweet t = getTweetByTwitterId(entry.getKey());
             if (t == null) {
                 log.warn("Could not update ackState for Tweet with twitterId [" + entry.getKey() +"] : No Tweet found!");

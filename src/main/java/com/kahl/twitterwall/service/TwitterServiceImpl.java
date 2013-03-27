@@ -29,8 +29,8 @@ public class TwitterServiceImpl implements TwitterService {
     }
 
     @Override
-    public Tweet getTweetFromDb(long tweetDbId) {
-        if (tweetDbId == 0) {
+    public Tweet getTweetFromDb(String tweetDbId) {
+        if (tweetDbId.equals("0")) {
             return null;
         } else {
             return dao.getTweetByTwitterId(tweetDbId);
@@ -43,7 +43,7 @@ public class TwitterServiceImpl implements TwitterService {
     }
 
     @Override
-    public void ackTweetsByTweetId(Map<Long, Integer> ackMap) {
+    public void ackTweetsByTweetId(Map<String, Integer> ackMap) {
         dao.ackTweetsByTweetId(ackMap);
 
     }

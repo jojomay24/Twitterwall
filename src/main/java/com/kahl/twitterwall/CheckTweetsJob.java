@@ -71,10 +71,12 @@ public void execute(JobExecutionContext jExeCtx) throws JobExecutionException {
                    tweetObj.setAckState(0);
                    tweetObj.setText(tweet.getText());
                    tweetObj.setCreatedAt(tweet.getCreatedAt());
-                   tweetObj.setTweetId(tweet.getId());
+                   tweetObj.setTweetId(""+tweet.getId());
                    tweetObj.setTwitterUser(twitterUser);
 
-                   maxId = (maxId < tweetObj.getTweetId() ) ? tweetObj.getTweetId() : maxId;
+                   long tweetIdAsLong = Long.parseLong(tweetObj.getTweetId());
+
+                   maxId = (maxId < tweetIdAsLong ) ? tweetIdAsLong : maxId;
 
                    // Instanzvariable kann aufgrund von Erzeugung der Objekte nicht verwendet werden!
                    TwitterService ts = (TwitterService)Twitterwall.ctx.getBean("twitterServiceImpl");

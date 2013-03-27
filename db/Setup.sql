@@ -10,7 +10,7 @@ CREATE TABLE TwitterUser (
 
 CREATE TABLE Tweet (
   id                        INT auto_increment,
-  tweetId                   long NOT NULL COMMENT 'see Twitter API Tweet ID',
+  tweetId                   VARCHAR(25) NOT NULL COMMENT 'see Twitter API Tweet ID',
   text                      VARCHAR(250) DEFAULT "EMPTY",
   createdAt                 timestamp,
   twitterUserId             INT NOT NULL,

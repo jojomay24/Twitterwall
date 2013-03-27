@@ -30,12 +30,11 @@ public class TwitterResource {
 
     private TwitterService twitterService;
 
-
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/test")
     public Response getTweetJson(
-            @DefaultValue("0") @QueryParam("tweetId") long tweetId)
+            @DefaultValue("0") @QueryParam("tweetId") String tweetId)
     {
         Tweet t = twitterService.getTweetFromDb(tweetId);
         if (t == null) {
@@ -46,21 +45,33 @@ public class TwitterResource {
                 .entity(t).build();
     }
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/test2")
+    public Response getFooBar() {
+        String json = "{\"foo\": \"bar\"}";
+        return Response.ok(json).header("Access-Control-Allow-Origin", "*").build();
+    }
+
     @PUT
     @Path("/ack")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void ackTweets(Map<Long,Integer> ackMap) {
+    public void ackTweets(Map<String, Integer> ackMap) {
         log.info("ackTweets called: ackMap size: " + ackMap.size());
 
         twitterService.ackTweetsByTweetId(ackMap);
+//        return Response.ok().build();
+//                .header("Access-Control-Allow-Origin", "*")
+//                .header("Access-Control-Allow-Methods", "PUT, GET, POST, DELETE, OPTIONS")
+//                .header("Access-Control-Allow-Headers", "Content-Type")
+        return;
     }
-
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/tweet")
     public Response getTweet(
-            @DefaultValue("0") @QueryParam("tweetId") long tweetId)
+            @DefaultValue("0") @QueryParam("tweetId") String tweetId)
     {
         log.info("getTweet called: tweetId:" + tweetId);
         String resultString = "";
@@ -76,7 +87,7 @@ public class TwitterResource {
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces({ MediaType.APPLICATION_JSON })
     @Path("/tweets")
     public Response getTweets(
             @DefaultValue("-1") @QueryParam("minTweetId") long minTweetId,
@@ -84,7 +95,7 @@ public class TwitterResource {
     {
         log.info("getTweets called: minTweetId: " + minTweetId + ",ackState:" + ackState);
         String resultString = "";
-        List<Tweet> l = twitterService.getTweetsByFilter(minTweetId,ackState);
+        List<Tweet> l = twitterService.getTweetsByFilter(minTweetId, ackState);
         if (l.isEmpty()) {
             resultString = "Leider konnte kein passender Tweet gefunden werdenn";
         } else {
@@ -94,12 +105,11 @@ public class TwitterResource {
                 sb.append(tweet.toString());
                 sb.append("\n");
             }
-            resultString= sb.toString();
+            resultString = sb.toString();
         }
-        return Response
-                .status(200)
-                .entity(l).build();
+         return Response
+         .status(200)
+         .entity(l).build();
     }
-
 
 }
