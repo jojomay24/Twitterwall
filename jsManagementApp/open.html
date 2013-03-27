@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Open Tweets</title>
+<meta name="description" content="">
+
+<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/jquery.mobile.structure-1.0.1.css" />
+<link rel="apple-touch-icon" href="images/launch_icon_57.png" />
+<link rel="apple-touch-icon" sizes="72x72" href="images/launch_icon_72.png" />
+<link rel="apple-touch-icon" sizes="114x114" href="images/launch_icon_114.png" />
+<link rel="stylesheet" href="css/jquery.mobile-1.0.1.css" />
+<link rel="stylesheet" href="css/custom.css" />
+<!--         <link rel="stylesheet" href="css/normalize.css"> -->
+<link rel="stylesheet" href="css/main.css">
+<!--         <script src="js/vendor/modernizr-2.6.2.min.js"></script> -->
+<script src="js/jquery-1.7.1.min.js"></script>
+<script src="js/jquery.mobile-1.0.1.min.js"></script>
+</head>
+<body>
+ <!--  <script src="js/plugins.js"></script> -->
+ <script src="js/main.js"></script>
+
+ <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
+ <div data-role="page" id="pageOpen" data-theme="c">
+  <div data-role="navbar">
+   <ul>
+    <li><a href="#pageOpen" class="ui-btn-active ui-state-persist">Open Tweets</a></li>
+    <li><a href="#pageAcked">Ack'ed Tweets</a></li>
+    <li><a href="#pageBlocked">Blocked Tweets</a></li>
+   </ul>
+  </div>
+  <!-- /navbar -->
+
+  <div data-role="content">
+   <div id="branding">
+    <h1>Open Tweets</h1>
+   </div>
+   <div class="choice_list" id="openTweets">
+    <p>Updating in &lt; <span class="timeInterval">__</span> seconds.</p>
+    
+    <div data-role="fieldcontain">
+<!--      <label for="url">Url:</label> <input type="url" name="url" id="serverUrl" value="http://127.0.0.1:9998/twitter" /> -->
+     <label for="url">Url:</label> <input type="url" name="url" id="serverUrl" value="http://192.168.1.52:9998/twitter" />
+    </div>
+    <button id="updateOpenTweetsBtn">Update</button>
+
+    <ul id="openTweetsList" data-role="listview" data-inset="true">
+    </ul>
+   </div>
+  </div>
+ </div>
+
+
+<!--  ------------------------- PAGE ACKED - START ---------------------- -->
+ <div data-role="page" id="pageAcked" data-theme="c">
+  <div data-role="navbar">
+   <ul>
+    <li><a href="#pageOpen">Open Tweets</a></li>
+    <li><a href="#pageAcked" class="ui-btn-active ui-state-persist">Ack'ed Tweets</a></li>
+    <li><a href="#pageBlocked">Blocked Tweets</a></li>
+   </ul>
+  </div>
+  <!-- /navbar -->
+
+  <div data-role="content">
+   <div id="branding">
+    <h1>Accepted Tweets</h1>
+   </div>
+   <div class="choice_list" id="ackedTweets">
+   <p>Updating in &lt; <span class="timeInterval">__</span> seconds.</p>
+    <button id="updateAckedTweetsBtn">Update</button>
+    <ul id="ackedTweetsList" data-role="listview" data-inset="true">
+    </ul>
+   </div>
+  </div>
+ </div>
+
+<!--  ------------------------- PAGE BLOCKED - START ---------------------- -->
+ <div data-role="page" id="pageBlocked" data-theme="c">
+  <div data-role="navbar">
+   <ul>
+    <li><a href="#pageOpen">Open Tweets</a></li>
+    <li><a href="#pageAcked">Ack'ed Tweets</a></li>
+    <li><a href="#pageBlocked" class="ui-btn-active ui-state-persist">Blocked Tweets</a></li>
+   </ul>
+  </div>
+  <!-- /navbar -->
+
+  <div data-role="content">
+   <div id="branding">
+    <h1>Blocked Tweets</h1>
+   </div>
+   
+   <div class="choice_list" id="ackedTweets">
+    <p>Updating in &lt; <span class="timeInterval">__</span> seconds.</p>
+    <button id="updateBlockedTweetsBtn">Update</button>
+    <ul id="blockedTweetsList" data-role="listview" data-inset="true">
+    </ul>
+   </div>
+  </div>
+ </div>
+
+</body>
+</html>

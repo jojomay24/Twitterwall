@@ -1,0 +1,35 @@
+alert("test");
+
+/*$.ajax({ 
+   type: "PUT",
+   dataType: "json",
+   url: "http://localhost:9998/twitter/ack",
+   data: {"314333951655284736":"0","314333951655284735":"0"},
+   error: function(data) { alert("Fail")},
+   success: function(data){ alert(data);
+   }
+});
+*/
+$.ajax({ 
+   type: "GET",
+   url: "http://127.0.0.1:9998/twitter/tweets",
+   dataType: "json",
+   
+   error: function(data) {
+   	alert("Fail: " + data.text);
+   	
+   							var list = data == null ? [] : (data instanceof Array ? data : [data]);
+
+// 									alert('error trapped in error: function(msg, url, line)');
+//          alert('msg = ' + msg.toSource() + ', url = ' + url + ', line = ' + line);
+   	 },
+   success: function(data){
+	   for (var key in data) {
+	   	console.log("key:"  + key)
+    		var data2 = data[key];
+ 							for (var key2 in data2) {
+ 								console.log("key2: "  + key2 + " " + data2[key2])
+ 							}
+				}	
+	   }
+});
