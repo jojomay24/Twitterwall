@@ -17,6 +17,7 @@ import org.apache.log4j.Logger;
 
 import com.kahl.twitterwall.Twitterwall;
 import com.kahl.twitterwall.entity.Tweet;
+import com.kahl.twitterwall.entity.TweetsTransferObject;
 import com.kahl.twitterwall.service.TwitterService;
 
 @Path("/twitter")
@@ -91,25 +92,26 @@ public class TwitterResource {
     @Path("/tweets")
     public Response getTweets(
             @DefaultValue("-1") @QueryParam("minTweetId") long minTweetId,
-            @DefaultValue("-1") @QueryParam("ackState") int ackState)
+            @DefaultValue("-1") @QueryParam("ackState") int ackState,
+            @DefaultValue("0") @QueryParam("offset") int offset)
     {
-        log.info("getTweets called: minTweetId: " + minTweetId + ",ackState:" + ackState);
-        String resultString = "";
-        List<Tweet> l = twitterService.getTweetsByFilter(minTweetId, ackState);
-        if (l.isEmpty()) {
-            resultString = "Leider konnte kein passender Tweet gefunden werdenn";
-        } else {
-            StringBuilder sb = new StringBuilder();
-            sb.append("Found " + l.size() + " Tweets: \n");
-            for (Tweet tweet : l) {
-                sb.append(tweet.toString());
-                sb.append("\n");
-            }
-            resultString = sb.toString();
+        log.info("getTweets called: minTweetId: " + minTweetId + ",ackState:" + ackState + ", offset: " + offset);
+        int maxResults=25;
+
+        TweetsTransferObject tto = new TweetsTransferObject();
+        int totalFoundNr = 0;
+        List<Tweet> l = twitterService.getTweetsByFilter(minTweetId, ackState, maxResults, offset);
+        if (!(l.isEmpty())) {
+                totalFoundNr = twitterService.getTotalNrOfTweetsByFilter(minTweetId, ackState);
         }
+         tto.tweets = l;
+         tto.totalFoundNr = totalFoundNr;
+         tto.ackState = ackState;
+         tto.offset = offset;
+
          return Response
          .status(200)
-         .entity(l).build();
+         .entity(tto).build();
     }
 
 }

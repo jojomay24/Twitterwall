@@ -9,6 +9,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -68,22 +69,40 @@ public class TwitterwallDaoImpl implements TwitterwallDao {
     }
 
     @Override
-    public List<Tweet> getTweetsByFilter(long minTweetId, int ackState) {
+    public List<Tweet> getTweetsByFilter(long minTweetId, int ackState, int maxResults, int offset) {
         List<Tweet> resultList = new ArrayList<Tweet>();
         Session session = sessionFactory.openSession();
 
         Criteria c = session.createCriteria(Tweet.class);
+        c.setMaxResults(maxResults);
         if (minTweetId != -1) {
             c.add(Restrictions.ge("tweetId", minTweetId));
         }
         if (ackState != -1) {
             c.add(Restrictions.eq("ackState", ackState));
         }
+        c.addOrder( Order.desc("tweetId") );
+        c.setFirstResult(offset);
         resultList = c.list();
-        log.info("FOUND " + resultList.size() + " elements");
+        log.info("FOUND " + resultList.size() + " elements (maxResults: " + maxResults + ", offset: " + offset + ")");
         session.close();
 
         return resultList;
+    }
+
+    @Override
+    public int getTotalNrOfTweetsByFilter(long minTweetId, int ackState) {
+        Session session = sessionFactory.openSession();
+
+        Query q = session.createQuery("Select count(*) From Tweet where tweetId >= :minTweetId and ackState = :ackState");
+        q.setLong("minTweetId", minTweetId);
+        q.setInteger("ackState", ackState);
+        List<Long> resultList = q.list();
+        int result = resultList.get(0).intValue();
+        log.info("TOTALLY FOUND " + result + " elements");
+
+        session.close();
+        return result;
     }
 
     @Override

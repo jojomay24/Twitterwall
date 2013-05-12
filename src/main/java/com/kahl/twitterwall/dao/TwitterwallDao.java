@@ -9,10 +9,13 @@ public interface TwitterwallDao {
 
     public void saveTweetToDb(Tweet t);
 
-    public List<Tweet> getTweetsByFilter(long minTweetId, int ackState);
+    public List<Tweet> getTweetsByFilter(long minTweetId, int ackState, int maxResults, int offset);
+
+    public int getTotalNrOfTweetsByFilter(long minTweetId, int ackState);
 
     public Tweet getTweetByTwitterId(String id);
 
     void ackTweetsByTweetId(Map<String, Integer> ackMap);
+
 
 }

@@ -11,7 +11,9 @@ public interface TwitterService {
 
     public Tweet getTweetFromDb(String tweetDbId);
 
-    public List<Tweet> getTweetsByFilter(long minTweetId, int ackState);
+    public List<Tweet> getTweetsByFilter(long minTweetId, int ackState, int maxResults, int offset);
+
+    public int getTotalNrOfTweetsByFilter(long minTweetId, int ackState);
 
     public void ackTweetsByTweetId(Map<String, Integer> ackMap);
 

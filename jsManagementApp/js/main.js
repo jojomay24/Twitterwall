@@ -6,7 +6,7 @@ const PAGE_OPEN_TWEETS = 'Open Tweets';
 const PAGE_ACKED_TWEETS = 'Acked Tweets';
 const PAGE_BLOCKED_TWEETS = 'Blocked Tweets';
 
-const TIME_INTERVAL = 40;
+const TIME_INTERVAL = 120;
 
 var currentPage;
 var myCounter;
@@ -152,10 +152,39 @@ function appendTweetsToList(data, list) {
     $.each(data, function(i, item) {
         var item = validateTweetItem(item);
         var listEntryHtml = constructTweetsListItem(item);
-        $(list).append(listEntryHtml).listview("refresh").trigger("create");
+        $(list).append(listEntryHtml);
     });
+    $(list).listview("refresh").trigger("create");
 
     list.slideDown();
+}
+
+function updateSearchResultBar(data) {
+    var currentOffset = { 1 :'#ackedTweetsCurrentOffset',0:'#openTweetsCurrentOffset',2:'#blockedTweetsCurrentOffset'};
+    var pageBack = {1:'#ackedTweetsPageBack',0:'#openTweetsPageBack',2:'#blockedTweetsPageBack'};
+    var pageForward = {1:'#ackedTweetsPageForward',0:'#openTweetsPageForward',2:'#blockedTweetsPageForward'};
+    var total = {1:'.totallyAckedTweets',0:".totallyOpenTweets",2:".totallyBlockedTweets"};
+    var minTweet = {1:'.tweetAckedMin',0:'.tweetOpenMin',2:'.tweetBlockedMin'};
+    var maxTweet = {1:'.tweetAckedMax',0:'.tweetOpenMax',2:'.tweetBlockedMax'};
+    
+    $(currentOffset[data.ackState]).val(data.offset);
+    if (data.offset === 0) {
+        $(pageBack[data.ackState]).hide();
+    } else {
+        $(pageBack[data.ackState]).show();
+    }
+    
+    if (data.totalFoundNr >= data.offset + 25) {
+        $(pageForward[data.ackState]).show();
+    } else {
+        $(pageForward[data.ackState]).hide();
+    }
+
+    $(total[data.ackState]).text(data.totalFoundNr);
+    var min = data.offset;
+    var max = min + data.tweets.length;
+    $(minTweet[data.ackState]).text(min);
+    $(maxTweet[data.ackState]).text(max);
 }
 
 function validateTweetItem(item) {
@@ -173,7 +202,7 @@ function validateTweetItem(item) {
 }
 
 function constructTweetsListItem(item) {
-    console.log(item.tweetId);
+//    console.log(item.tweetId);
     var listEntryHtml;
     listEntryHtml = '<li>';
     listEntryHtml += '<img style="width: 100%;" src="'
@@ -220,14 +249,17 @@ function changeAckStateOnServer(data) {
     });
 }
 
-function getTweetsFromServer(list, state) {
+function getTweetsFromServer(list, state, offset) {
     var serverUrl = $('#serverUrl').val();
+    offset = ( offset == undefined) ? 0 : offset;
+//    offset = 25;
     list.empty();
+    console.log(unixTime() +" calling getTweetsFromServer");
     $.ajax({
         type : "GET",
         url : serverUrl + "/tweets",
         dataType : "json",
-        data : "ackState=" + state,
+        data : "ackState=" + state + "&offset=" + offset,
 
         error : function(data) {
             alert("Fail: " + data.text);
@@ -235,8 +267,20 @@ function getTweetsFromServer(list, state) {
                     : [ data ]);
         },
         success : function(data) {
-            appendTweetsToList(data, list);
+            console.log(unixTime() +" Received Answer for getTweetsFromServer:" + data);
+            console.log("Found total nr:" + data.totalFoundNr);
+            console.log("Actually loaded nr: " + data.containedNr);
+            console.log(data.tweets.length);
+            updateSearchResultBar(data);
+            appendTweetsToList(data.tweets, list);
+            console.log(unixTime() +" Appended to list");
         }
     });
+    
+    /* ---------------------------------------- helper -------------------------------*/
+    
+    function unixTime() {
+        return Math.round(+new Date()/1000);
+    }
 
 }

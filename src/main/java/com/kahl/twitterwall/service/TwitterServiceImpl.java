@@ -20,12 +20,17 @@ public class TwitterServiceImpl implements TwitterService {
     private TwitterwallDao dao;
 
     @Override
-    public List<Tweet> getTweetsByFilter(long minTweetId, int ackState) {
+    public List<Tweet> getTweetsByFilter(long minTweetId, int ackState, int maxResults, int offset) {
 //        if (minTweetId == -1 && ackState == -1) {
 //            return new ArrayList<Tweet>();
 //        }
 
-        return dao.getTweetsByFilter(minTweetId, ackState);
+        return dao.getTweetsByFilter(minTweetId, ackState, maxResults, offset);
+    }
+
+    @Override
+    public int getTotalNrOfTweetsByFilter(long minTweetId, int ackState) {
+        return dao.getTotalNrOfTweetsByFilter(minTweetId, ackState);
     }
 
     @Override

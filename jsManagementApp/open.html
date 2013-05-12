@@ -41,12 +41,21 @@
     <h1>Open Tweets</h1>
    </div>
    <div class="choice_list" id="openTweets">
-    <p>Updating in &lt; <span class="timeInterval">__</span> seconds.</p>
-    
     <div data-role="fieldcontain">
 <!--      <label for="url">Url:</label> <input type="url" name="url" id="serverUrl" value="http://127.0.0.1:9998/twitter" /> -->
-     <label for="url">Url:</label> <input type="url" name="url" id="serverUrl" value="http://192.168.1.52:9998/twitter" />
+     <label for="url">Url:</label> <input type="url" name="url" id="serverUrl" value="http://192.168.1.54:9998/twitter" />
     </div>
+    
+    <input type="text" id="openTweetsCurrentOffset" value="0" style="display: none;" />
+    
+    <p>Updating in &lt; <span class="timeInterval">__</span> seconds.
+    Totally found tweets: <span class="totallyOpenTweets" style="font-weight: bold;">?</span> , Displaying Tweets: &nbsp;&nbsp;&nbsp;&nbsp;
+    <a id="openTweetsPageBack" href="#" onclick="getTweetsFromServer($('#openTweetsList'), STATE_OPEN, parseInt($('#openTweetsCurrentOffset').val()) - 25);" style="display: none;font-weight: bolder;">  &lt; </a>
+    <span class="tweetOpenMin">?</span> - <span class="tweetOpenMax">?</span>
+    <a id="openTweetsPageForward" href="#" onclick="getTweetsFromServer($('#openTweetsList'), STATE_OPEN, parseInt($('#openTweetsCurrentOffset').val()) + 25);" style="display: none;font-weight: bolder;"> &gt;</a>
+    </p>
+
+    
     <button id="updateOpenTweetsBtn">Update</button>
 
     <ul id="openTweetsList" data-role="listview" data-inset="true">
@@ -72,8 +81,17 @@
     <h1>Accepted Tweets</h1>
    </div>
    <div class="choice_list" id="ackedTweets">
-   <p>Updating in &lt; <span class="timeInterval">__</span> seconds.</p>
-    <button id="updateAckedTweetsBtn">Update</button>
+   <input type="text" id="ackedTweetsCurrentOffset" value="0" style="display: none;" />
+   
+   <p>Updating in &lt; <span class="timeInterval">__</span> seconds.
+   Totally found tweets: <span class="totallyAckedTweets" style="font-weight: bold;">?</span> , Displaying Tweets: &nbsp;&nbsp;&nbsp;&nbsp;
+   <a id="ackedTweetsPageBack" href="#" onclick="getTweetsFromServer($('#ackedTweetsList'), STATE_ACKED, $('#ackedTweetsCurrentOffset').val() - 25);" style="display: none;">  &lt; </a>
+   <span class="tweetAckedMin">?</span> - <span class="tweetAckedMax">?</span>
+   <a id="ackedTweetsPageForward" href="#" onclick="getTweetsFromServer($('#ackedTweetsList'), STATE_ACKED, $('#ackedTweetsCurrentOffset').val() + 25);" style="display: none;"> &gt;</a>
+   </p>
+
+   <button id="updateAckedTweetsBtn">Update</button>
+   
     <ul id="ackedTweetsList" data-role="listview" data-inset="true">
     </ul>
    </div>
@@ -96,8 +114,14 @@
     <h1>Blocked Tweets</h1>
    </div>
    
-   <div class="choice_list" id="ackedTweets">
-    <p>Updating in &lt; <span class="timeInterval">__</span> seconds.</p>
+   <div class="choice_list" id="blockedTweets">
+    <input type="text" id="blockedTweetsCurrentOffset" value="0" style="display: none;" />
+    <p>Updating in &lt; <span class="timeInterval">__</span> seconds.
+    Totally found tweets: <span class="totallyBlockedTweets" style="font-weight: bold;">?</span> , Displaying Tweets: &nbsp;&nbsp;&nbsp;&nbsp;
+    <a id="blockedTweetsPageBack" href="#" onclick="getTweetsFromServer($('#blockedTweetsList'), STATE_BLOCKED, parseInt($('#blockedTweetsCurrentOffset').val()) - 25);" style="display: none;font-weight: bolder;">  &lt; </a>
+    <span class="tweetBlockedMin">?</span> - <span class="tweetBlockedMax">?</span>
+    <a id="blockedTweetsPageForward" href="#" onclick="getTweetsFromServer($('#blockedTweetsList'), STATE_BLOCKED, parseInt($('#blockedTweetsCurrentOffset').val()) + 25);" style="display: none;font-weight: bolder;"> &gt;</a>
+    </p>
     <button id="updateBlockedTweetsBtn">Update</button>
     <ul id="blockedTweetsList" data-role="listview" data-inset="true">
     </ul>
