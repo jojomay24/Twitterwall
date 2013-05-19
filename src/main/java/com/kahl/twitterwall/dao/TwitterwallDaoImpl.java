@@ -1,6 +1,7 @@
 package com.kahl.twitterwall.dao;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -58,6 +59,21 @@ public class TwitterwallDaoImpl implements TwitterwallDao {
     }
 
     @Override
+    @Transactional(readOnly = false)
+    public void updateTweet(Tweet tweet) {
+        try {
+            Session session = sessionFactory.openSession();
+            session.update(tweet);
+            log.info("updated tweet " + tweet);
+            session.flush();
+            session.close();
+        } catch (Exception e) {
+            log.error("Failed to update Tweet " + tweet + " from author " + tweet.getTwitterUser() + ": \n"
+                    + e.getMessage());
+        }
+    }
+
+    @Override
     public Tweet getTweetByTwitterId(String id) {
         Session session = sessionFactory.openSession();
         Query q = session.createQuery("From Tweet where tweetId = " + id);
@@ -85,6 +101,24 @@ public class TwitterwallDaoImpl implements TwitterwallDao {
         c.setFirstResult(offset);
         resultList = c.list();
         log.info("FOUND " + resultList.size() + " elements (maxResults: " + maxResults + ", offset: " + offset + ")");
+        session.close();
+
+        return resultList;
+    }
+
+    @Override
+    public List<Tweet> getTweetsOlderThan(Date date) {
+        List<Tweet> resultList = new ArrayList<Tweet>();
+        Session session = sessionFactory.openSession();
+
+        Criteria c = session.createCriteria(Tweet.class);
+        c.setMaxResults(3);
+        c.add(Restrictions.eq("ackState", 0));
+        c.add(Restrictions.le("createdAt", date));
+
+        resultList = c.list();
+
+        log.debug("Found " + resultList.size() + " elements older than " + date);
         session.close();
 
         return resultList;

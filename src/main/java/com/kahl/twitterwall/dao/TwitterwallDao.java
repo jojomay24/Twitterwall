@@ -1,5 +1,6 @@
 package com.kahl.twitterwall.dao;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -9,7 +10,11 @@ public interface TwitterwallDao {
 
     public void saveTweetToDb(Tweet t);
 
+    public void updateTweet(Tweet t);
+
     public List<Tweet> getTweetsByFilter(long minTweetId, int ackState, int maxResults, int offset);
+
+    public List<Tweet> getTweetsOlderThan(Date date);
 
     public int getTotalNrOfTweetsByFilter(long minTweetId, int ackState);
 

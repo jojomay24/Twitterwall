@@ -17,4 +17,6 @@ public interface TwitterService {
 
     public void ackTweetsByTweetId(Map<String, Integer> ackMap);
 
+    public void ackOpenTweetsOlderThan(int seconds);
+
 }

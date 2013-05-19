@@ -1,6 +1,6 @@
 package com.kahl.twitterwall.service;
 
-import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kahl.twitterwall.Twitterwall;
 import com.kahl.twitterwall.dao.TwitterwallDao;
 import com.kahl.twitterwall.entity.Tweet;
 
@@ -51,6 +52,20 @@ public class TwitterServiceImpl implements TwitterService {
     public void ackTweetsByTweetId(Map<String, Integer> ackMap) {
         dao.ackTweetsByTweetId(ackMap);
 
+    }
+
+    @Override
+    public void ackOpenTweetsOlderThan(int seconds) {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.SECOND, - seconds);
+        List<Tweet> tweets = dao.getTweetsOlderThan(cal.getTime());
+
+        for (Tweet tweet : tweets) {
+            tweet.setAckState(Twitterwall.STATE_ACKED);
+            dao.updateTweet(tweet);
+            log.debug("autoacked tweet " + tweet);
+        }
+        log.info("autoacked " + tweets.size() + " tweets");
     }
 
 }

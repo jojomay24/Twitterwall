@@ -1,7 +1,5 @@
 package com.kahl.twitterwall;
 
-import java.io.IOException;
-
 import org.apache.log4j.Logger;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
@@ -14,8 +12,6 @@ import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
 import org.springframework.stereotype.Service;
 
-import com.kahl.twitterwall.rest.GrizzlyServer;
-
 /**
  * @author Alexander Kahl
  * @since March 2013
@@ -23,15 +19,15 @@ import com.kahl.twitterwall.rest.GrizzlyServer;
  *
  */
 @Service
-public class JobScheduler {
+public class GetTweetsJobScheduler {
 
-    private static Logger log = Logger.getLogger(JobScheduler.class);
+    private static Logger log = Logger.getLogger(GetTweetsJobScheduler.class);
 
     private Scheduler sch;
     private JobDetail job;
     private Trigger trigger;
 
-    public JobScheduler() {
+    public GetTweetsJobScheduler() {
         // specify the job' s details..
         job = JobBuilder.newJob(CheckTweetsJob.class)
                 .withIdentity("checkTweetsJob")
