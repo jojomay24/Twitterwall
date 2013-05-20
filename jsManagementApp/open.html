@@ -32,6 +32,7 @@
     <li><a href="#pageOpen" class="ui-btn-active ui-state-persist">Open Tweets</a></li>
     <li><a href="#pageAcked">Ack'ed Tweets</a></li>
     <li><a href="#pageBlocked">Blocked Tweets</a></li>
+    <li><a href="#pageConfig">Config</a></li>
    </ul>
   </div>
   <!-- /navbar -->
@@ -72,6 +73,7 @@
     <li><a href="#pageOpen">Open Tweets</a></li>
     <li><a href="#pageAcked" class="ui-btn-active ui-state-persist">Ack'ed Tweets</a></li>
     <li><a href="#pageBlocked">Blocked Tweets</a></li>
+    <li><a href="#pageConfig">Config</a></li>
    </ul>
   </div>
   <!-- /navbar -->
@@ -105,6 +107,7 @@
     <li><a href="#pageOpen">Open Tweets</a></li>
     <li><a href="#pageAcked">Ack'ed Tweets</a></li>
     <li><a href="#pageBlocked" class="ui-btn-active ui-state-persist">Blocked Tweets</a></li>
+    <li><a href="#pageConfig">Config</a></li>
    </ul>
   </div>
   <!-- /navbar -->
@@ -128,6 +131,42 @@
    </div>
   </div>
  </div>
+ 
+ <!--  ------------------------- PAGE CONFIG -  ---------------------- -->
+ 
+  <div data-role="page" id="pageConfig" data-theme="c">
+  <div data-role="navbar">
+   <ul>
+    <li><a href="#pageOpen">Open Tweets</a></li>
+    <li><a href="#pageAcked">Ack'ed Tweets</a></li>
+    <li><a href="#pageBlocked">Blocked Tweets</a></li>
+    <li><a href="#pageConfig"  class="ui-btn-active ui-state-persist">Config</a></li>
+   </ul>
+  </div>
+  <!-- /navbar -->
+
+  <div data-role="content">
+   <div id="branding">
+    <h1>Config</h1>
+   </div>
+   <div class="choice_list">
+    <div data-role="fieldcontain">
+<!--      <label for="url">Url:</label> <input type="url" name="url" id="serverUrl" value="http://127.0.0.1:9998/twitter" /> -->
+     <label for="minAgeAutoAck">MinAgeAutoAck (sec)</label>
+     <input type="text" name="minAgeAutoAck" id="minAgeAutoAck" value="" />
+     <div data-role="controlgroup">
+      <a href="#" data-role="button" id="getMinAgeAutoAckBtn" >Get Current Value</a>
+      <a href="#" data-role="button" id="setMinAgeAutoAckBtn" >Set New Value</a>
+    </div>
+    </div>
+    
+    <input type="text" id="openTweetsCurrentOffset" value="0" style="display: none;" />
+    
+    </ul>
+   </div>
+  </div>
+ </div>
+ 
 
 </body>
 </html>

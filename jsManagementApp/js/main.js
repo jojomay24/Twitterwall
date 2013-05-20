@@ -11,6 +11,12 @@ const TIME_INTERVAL = 120;
 var currentPage;
 var myCounter;
 
+/* ---------------------------------------- helper -------------------------------*/
+function unixTime() {
+    return Math.round(+new Date()/1000);
+}
+
+
 /* --------------- timer ---------------------------------------*/
 function Countdown(options) {
     var timer, 
@@ -48,8 +54,117 @@ function Countdown(options) {
     };
 }
 
+/* ------------ SERVER Calls ------------------------------------------------*/
+function changeAckStateOnServer(data) {
+    var serverUrl = $('#serverUrl').val();
+    $.ajax({
+        type : "PUT",
+        url : serverUrl + "/ack",
+
+        data : JSON.stringify(data),
+        contentType : 'application/json',
+        dataType : "json",
+
+        error : function(data) {
+            console.log("Failed changing the ack state!");
+            alert("Failed changing AckState!")
+        },
+        success : function(data) {
+            console.log("Success changing the ack state!");
+        }
+    });
+}
+
+function getTweetsFromServer(list, state, offset) {
+    var serverUrl = $('#serverUrl').val();
+    offset = ( offset == undefined) ? 0 : offset;
+//    offset = 25;
+    list.empty();
+    console.log(unixTime() +" calling getTweetsFromServer");
+    $.ajax({
+        type : "GET",
+        url : serverUrl + "/tweets",
+        dataType : "json",
+        data : "ackState=" + state + "&offset=" + offset,
+
+        error : function(data) {
+            alert("Fail: " + data.text);
+            var list = data == null ? [] : (data instanceof Array ? data
+                    : [ data ]);
+        },
+        success : function(data) {
+            console.log(unixTime() +" Received Answer for getTweetsFromServer:" + data);
+            console.log("Found total nr:" + data.totalFoundNr);
+            console.log("Actually loaded nr: " + data.containedNr);
+            console.log(data.tweets.length);
+            updateSearchResultBar(data);
+            appendTweetsToList(data.tweets, list);
+            console.log(unixTime() +" Appended to list");
+        }
+    });
+
+}
+
+function getMinAutoAckAge() {
+    var serverUrl = $('#serverUrl').val();
+    console.log(unixTime() +" calling getMinAutoAckAge");
+    $.ajax({
+        type : "GET",
+        url : serverUrl + "/minAutoAckAge",
+        dataType : "json",
+        data : "",
+        
+        error : function(data) {
+            alert("Fail: " + data.text);
+            var list = data == null ? [] : (data instanceof Array ? data
+                    : [ data ]);
+        },
+        success : function(data) {
+            console.log(unixTime() +" Received Answer for getMinAutoAckAge:" + data);
+            $('#minAgeAutoAck').val(data);
+        }
+    });
+}
+
+
+function setMinAutoAckAge(age) {
+    var serverUrl = $('#serverUrl').val();
+    console.log(unixTime() +" calling setMinAutoAckAge with age: " + age);
+    $.ajax({
+        type : "PUT",
+        url : serverUrl + "/minAutoAckAge",
+        data : JSON.stringify(parseInt(age)),
+        contentType : 'application/json',
+        dataType : "json",
+
+        error : function(data) {
+            alert("Fail: " + data.text);
+            var list = data == null ? [] : (data instanceof Array ? data
+                    : [ data ]);
+        },
+        success : function() {
+            console.log(unixTime() +" Received Successful Answer for setMinAutoAckAge");
+        }
+    });
+}
+
 /* ---------------------- delegates ------------------------------ */
 /* pageinit */
+$(document).delegate("#pageConfig", "pageinit", function() {
+    currentPage = document.title;
+    $( "#getMinAgeAutoAckBtn" ).bind( "click", function() {
+        getMinAutoAckAge();
+      });
+    $( "#setMinAgeAutoAckBtn" ).bind( "click", function() {
+        var newValue = $('#minAgeAutoAck').val();
+        var intRegex = /^\d+$/;
+        if(intRegex.test(newValue)) {
+            setMinAutoAckAge(newValue);
+         } else {
+             alert('Please enter a valid positive integer!');
+         }
+    });
+});
 $(document).delegate("#pageOpen", "pageinit", function() {
     currentPage = document.title;
     $("#updateOpenTweetsBtn").click(function() {
@@ -228,59 +343,3 @@ function constructTweetsListItem(item) {
     return listEntryHtml;
 }
 
-/* ------------ SERVER Calls ------------------------------------------------*/
-function changeAckStateOnServer(data) {
-    var serverUrl = $('#serverUrl').val();
-    $.ajax({
-        type : "PUT",
-        url : serverUrl + "/ack",
-
-        data : JSON.stringify(data),
-        contentType : 'application/json',
-        dataType : "json",
-
-        error : function(data) {
-            console.log("Failed changing the ack state!");
-            alert("Failed changing AckState!")
-        },
-        success : function(data) {
-            console.log("Success changing the ack state!");
-        }
-    });
-}
-
-function getTweetsFromServer(list, state, offset) {
-    var serverUrl = $('#serverUrl').val();
-    offset = ( offset == undefined) ? 0 : offset;
-//    offset = 25;
-    list.empty();
-    console.log(unixTime() +" calling getTweetsFromServer");
-    $.ajax({
-        type : "GET",
-        url : serverUrl + "/tweets",
-        dataType : "json",
-        data : "ackState=" + state + "&offset=" + offset,
-
-        error : function(data) {
-            alert("Fail: " + data.text);
-            var list = data == null ? [] : (data instanceof Array ? data
-                    : [ data ]);
-        },
-        success : function(data) {
-            console.log(unixTime() +" Received Answer for getTweetsFromServer:" + data);
-            console.log("Found total nr:" + data.totalFoundNr);
-            console.log("Actually loaded nr: " + data.containedNr);
-            console.log(data.tweets.length);
-            updateSearchResultBar(data);
-            appendTweetsToList(data.tweets, list);
-            console.log(unixTime() +" Appended to list");
-        }
-    });
-    
-    /* ---------------------------------------- helper -------------------------------*/
-    
-    function unixTime() {
-        return Math.round(+new Date()/1000);
-    }
-
-}

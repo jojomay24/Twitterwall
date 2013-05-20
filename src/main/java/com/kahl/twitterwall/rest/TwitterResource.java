@@ -59,12 +59,7 @@ public class TwitterResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public void ackTweets(Map<String, Integer> ackMap) {
         log.info("ackTweets called: ackMap size: " + ackMap.size());
-
         twitterService.ackTweetsByTweetId(ackMap);
-//        return Response.ok().build();
-//                .header("Access-Control-Allow-Origin", "*")
-//                .header("Access-Control-Allow-Methods", "PUT, GET, POST, DELETE, OPTIONS")
-//                .header("Access-Control-Allow-Headers", "Content-Type")
         return;
     }
 
@@ -112,6 +107,29 @@ public class TwitterResource {
          return Response
          .status(200)
          .entity(tto).build();
+    }
+
+    @GET
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Path("/minAutoAckAge")
+    public Response getMinAutoAckAge()
+    {
+        log.info("getMinAutoAckAge called.Returning:" + Twitterwall.MIN_TWEET_AGE_FOR_AUTO_ACK);
+
+        return Response
+                .status(200)
+                .entity(Twitterwall.MIN_TWEET_AGE_FOR_AUTO_ACK).build();
+    }
+
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/minAutoAckAge")
+    public void setMinAutoAckAge(Integer newMinTweetAgeForAutoAck)
+    {
+        log.info("setMinAutoAckAge called with newMinTweetAgeForAutoAck: " + newMinTweetAgeForAutoAck);
+        Twitterwall.MIN_TWEET_AGE_FOR_AUTO_ACK = newMinTweetAgeForAutoAck;
+
+        return;
     }
 
 }
