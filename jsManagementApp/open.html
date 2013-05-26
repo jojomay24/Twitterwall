@@ -144,8 +144,8 @@
 
     <div data-role="fieldcontain">
      <label for="serverUrl">Url:</label>
-     <input type="url" name="url" id="serverUrl" value="http://127.0.0.1:9998/twitter" />
-<!--      <input type="url" name="url" id="serverUrl" value="http://192.168.1.54:9998/twitter" /> -->
+<!--     <input type="url" name="url" id="serverUrl" value="http://127.0.0.1:9998/twitter" /> -->
+      <input type="url" name="url" id="serverUrl" value="http://192.168.1.52:9998/twitter" />
     </div>
     
     <hr>
@@ -154,8 +154,8 @@
         <label for="minAgeAutoAck">MinAgeAutoAck (sec)</label>
         <input type="text" name="minAgeAutoAck" id="minAgeAutoAck" value="" />
         <div data-role="controlgroup" data-type="horizontal">
-            <a href="#" data-role="button" id="getMinAgeAutoAckBtn" >Get Current Value</a>
-            <a href="#" data-role="button" id="setMinAgeAutoAckBtn" >Set New Value</a>
+            <a href="#" data-role="button" id="getMinAgeAutoAckBtn" >Current Value</a>
+            <a href="#" data-role="button" id="setMinAgeAutoAckBtn" >New Value</a>
         </div>
     </div>
     
@@ -165,7 +165,7 @@
         <label for="regexFilteringActive">Regex based tweet blocking</label>
         <input type="text" name="regexFilteringActive" id="regexFilteringActive" value="" data-mini="true" readonly="readonly"/>
         <div data-role="controlgroup" data-type="horizontal">
-           <a href="#" data-role="button" id="getRegexFilteringActiveBtn" data-mini="true">is Active?</a>
+           <a href="#" data-role="button" id="getRegexFilteringActiveBtn" data-mini="true">Active?</a>
            <a href="#" data-role="button" id="activateRegexFilteringBtn" data-mini="true">Activate</a>
            <a href="#" data-role="button" id="deactivateRegexFilteringBtn" data-mini="true">Deactivate</a>
         </div>
