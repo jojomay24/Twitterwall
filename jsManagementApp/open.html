@@ -20,12 +20,7 @@
 <script src="js/jquery.mobile-1.0.1.min.js"></script>
 </head>
 <body>
- <!--  <script src="js/plugins.js"></script> -->
  <script src="js/main.js"></script>
-
- <!--[if lt IE 7]>
-            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
-        <![endif]-->
  <div data-role="page" id="pageOpen" data-theme="c">
   <div data-role="navbar">
    <ul>
@@ -42,10 +37,6 @@
     <h1>Open Tweets</h1>
    </div>
    <div class="choice_list" id="openTweets">
-    <div data-role="fieldcontain">
-<!--      <label for="url">Url:</label> <input type="url" name="url" id="serverUrl" value="http://127.0.0.1:9998/twitter" /> -->
-     <label for="url">Url:</label> <input type="url" name="url" id="serverUrl" value="http://192.168.1.54:9998/twitter" />
-    </div>
     
     <input type="text" id="openTweetsCurrentOffset" value="0" style="display: none;" />
     
@@ -150,19 +141,56 @@
     <h1>Config</h1>
    </div>
    <div class="choice_list">
+
     <div data-role="fieldcontain">
-<!--      <label for="url">Url:</label> <input type="url" name="url" id="serverUrl" value="http://127.0.0.1:9998/twitter" /> -->
-     <label for="minAgeAutoAck">MinAgeAutoAck (sec)</label>
-     <input type="text" name="minAgeAutoAck" id="minAgeAutoAck" value="" />
-     <div data-role="controlgroup">
-      <a href="#" data-role="button" id="getMinAgeAutoAckBtn" >Get Current Value</a>
-      <a href="#" data-role="button" id="setMinAgeAutoAckBtn" >Set New Value</a>
-    </div>
+     <label for="serverUrl">Url:</label>
+     <input type="url" name="url" id="serverUrl" value="http://127.0.0.1:9998/twitter" />
+<!--      <input type="url" name="url" id="serverUrl" value="http://192.168.1.54:9998/twitter" /> -->
     </div>
     
-    <input type="text" id="openTweetsCurrentOffset" value="0" style="display: none;" />
+    <hr>
+
+    <div data-role="fieldcontain">
+        <label for="minAgeAutoAck">MinAgeAutoAck (sec)</label>
+        <input type="text" name="minAgeAutoAck" id="minAgeAutoAck" value="" />
+        <div data-role="controlgroup" data-type="horizontal">
+            <a href="#" data-role="button" id="getMinAgeAutoAckBtn" >Get Current Value</a>
+            <a href="#" data-role="button" id="setMinAgeAutoAckBtn" >Set New Value</a>
+        </div>
+    </div>
     
-    </ul>
+    <hr>
+    
+    <div data-role="fieldcontain">
+        <label for="regexFilteringActive">Regex based tweet blocking</label>
+        <input type="text" name="regexFilteringActive" id="regexFilteringActive" value="" data-mini="true" readonly="readonly"/>
+        <div data-role="controlgroup" data-type="horizontal">
+           <a href="#" data-role="button" id="getRegexFilteringActiveBtn" data-mini="true">is Active?</a>
+           <a href="#" data-role="button" id="activateRegexFilteringBtn" data-mini="true">Activate</a>
+           <a href="#" data-role="button" id="deactivateRegexFilteringBtn" data-mini="true">Deactivate</a>
+        </div>
+    </div>
+     
+    <div data-role="fieldcontain">
+        <label for="regex1">Regex 1</label>
+        <input type="text" name="regex1" id="regex1" value="" />
+        <label for="regex2">Regex 2</label>
+        <input type="text" name="regex2" id="regex2" value="" />
+        <label for="regex3">Regex 3</label>
+        <input type="text" name="regex3" id="regex3" value="" />
+        <label for="regex4">Regex 4</label>
+        <input type="text" name="regex4" id="regex4" value="" />
+        <label for="regex5">Regex 5</label>
+        <input type="text" name="regex5" id="regex5" value="" />
+    </div>
+
+     <div data-role="controlgroup" data-type="horizontal">
+        <a href="#" data-role="button" id="getRegexListBtn" >Get Regex List</a>
+        <a href="#" data-role="button" id="setRegexListBtn" >Set Regex List</a>
+    </div>
+
+    <hr>
+
    </div>
   </div>
  </div>

@@ -83,13 +83,14 @@ box-shadow:none;
 /*** home **/
 
 #branding{
-background:url(images/logo.png) no-repeat;
-width:322px;
-height:165px;
-text-indent:-999px;
-font-size:0px;
-margin:-10px auto 0 auto;
-border-bottom:1px solid rgba(65, 38, 37, 0.6);
+ display: block-inline;
+ background:url(images/logo.jpg) no-repeat;
+ width:640px;
+ height:311px;
+ text-indent:-999px;
+ font-size:0px;
+ margin:-10px auto 0 auto;
+ border-bottom:1px solid rgba(65, 38, 37, 0.6);
 }
 
 .choice_list h1{

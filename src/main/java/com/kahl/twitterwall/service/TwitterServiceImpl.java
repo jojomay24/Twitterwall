@@ -58,7 +58,7 @@ public class TwitterServiceImpl implements TwitterService {
     public void ackOpenTweetsOlderThan(int seconds) {
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.SECOND, - seconds);
-        List<Tweet> tweets = dao.getTweetsOlderThan(cal.getTime());
+        List<Tweet> tweets = dao.getOpenTweetsOlderThan(cal.getTime());
 
         for (Tweet tweet : tweets) {
             tweet.setAckState(Twitterwall.STATE_ACKED);

@@ -64,7 +64,8 @@ function changeAckStateOnServer(data) {
         data : JSON.stringify(data),
         contentType : 'application/json',
         dataType : "json",
-
+        beforeSend: function() { $.mobile.showPageLoadingMsg(); }, //Show spinner
+        complete: function() { $.mobile.hidePageLoadingMsg() }, //Hide spinner
         error : function(data) {
             console.log("Failed changing the ack state!");
             alert("Failed changing AckState!")
@@ -86,7 +87,8 @@ function getTweetsFromServer(list, state, offset) {
         url : serverUrl + "/tweets",
         dataType : "json",
         data : "ackState=" + state + "&offset=" + offset,
-
+        beforeSend: function() { $.mobile.showPageLoadingMsg(); }, //Show spinner
+        complete: function() { $.mobile.hidePageLoadingMsg() }, //Hide spinner
         error : function(data) {
             alert("Fail: " + data.text);
             var list = data == null ? [] : (data instanceof Array ? data
@@ -113,7 +115,8 @@ function getMinAutoAckAge() {
         url : serverUrl + "/minAutoAckAge",
         dataType : "json",
         data : "",
-        
+        beforeSend: function() { $.mobile.showPageLoadingMsg(); }, //Show spinner
+        complete: function() { $.mobile.hidePageLoadingMsg() }, //Hide spinner
         error : function(data) {
             alert("Fail: " + data.text);
             var list = data == null ? [] : (data instanceof Array ? data
@@ -126,7 +129,6 @@ function getMinAutoAckAge() {
     });
 }
 
-
 function setMinAutoAckAge(age) {
     var serverUrl = $('#serverUrl').val();
     console.log(unixTime() +" calling setMinAutoAckAge with age: " + age);
@@ -136,7 +138,8 @@ function setMinAutoAckAge(age) {
         data : JSON.stringify(parseInt(age)),
         contentType : 'application/json',
         dataType : "json",
-
+        beforeSend: function() { $.mobile.showPageLoadingMsg(); }, //Show spinner
+        complete: function() { $.mobile.hidePageLoadingMsg() }, //Hide spinner
         error : function(data) {
             alert("Fail: " + data.text);
             var list = data == null ? [] : (data instanceof Array ? data
@@ -148,22 +151,142 @@ function setMinAutoAckAge(age) {
     });
 }
 
+function getRegexFilteringActive() {
+    var serverUrl = $('#serverUrl').val();
+    console.log(unixTime() +" calling getRegexFilteringActive");
+    $.ajax({
+        type : "GET",
+        url : serverUrl + "/regexFilteringActive",
+        dataType : "json",
+        data : "",
+        beforeSend: function() { $.mobile.showPageLoadingMsg(); }, //Show spinner
+        complete: function() { $.mobile.hidePageLoadingMsg() }, //Hide spinner
+        error : function(data) {
+            alert("Fail: " + data.text);
+            var list = data == null ? [] : (data instanceof Array ? data
+                    : [ data ]);
+        },
+        success : function(data) {
+            console.log(unixTime() +" Received Answer for getRegexFilteringActive:" + data);
+            $('#regexFilteringActive').val(data);
+        }
+    });
+}
+
+function setRegexFilteringState(state) {
+    var serverUrl = $('#serverUrl').val();
+    console.log(unixTime() +" calling setRegexFilteringState with State: " + state);
+    var stateAsBoolean = (state === 'ACTIVE' ? true : false);
+    
+    $.ajax({
+        type : "PUT",
+        url : serverUrl + "/regexFilteringActive",
+        data : JSON.stringify( stateAsBoolean),
+        contentType : 'application/json',
+        dataType : "json",
+        beforeSend: function() { $.mobile.showPageLoadingMsg(); }, //Show spinner
+        complete: function() { $.mobile.hidePageLoadingMsg() }, //Hide spinner
+        error : function(data) {
+            alert("Fail: " + data.text);
+            var list = data == null ? [] : (data instanceof Array ? data
+                    : [ data ]);
+        },
+        success : function() {
+            console.log(unixTime() +" Received Successful Answer for setRegexFilteringState");
+            $('#regexFilteringActive').val(stateAsBoolean);
+        }
+    });
+}
+
+function getRegexList() {
+    var serverUrl = $('#serverUrl').val();
+    console.log(unixTime() +" calling getRegexList");
+    $.ajax({
+        type : "GET",
+        url : serverUrl + "/regexExpressions",
+        dataType : "json",
+        data : "",
+        beforeSend: function() { $.mobile.showPageLoadingMsg(); }, //Show spinner
+        complete: function() { $.mobile.hidePageLoadingMsg() }, //Hide spinner
+        error : function(data) {
+            alert("Fail: " + data.text);
+            var list = data == null ? [] : (data instanceof Array ? data
+                    : [ data ]);
+        },
+        success : function(data) {
+            console.log(unixTime() +" Received Answer for getRegexList:" + data);
+            for ( var i = 0; i < 5; i++) {
+                $('#regex' + (i+1)).val(data[i]);
+            }
+        }
+    });
+}
+
+function setRegexList() {
+    var serverUrl = $('#serverUrl').val();
+    console.log(unixTime() +" calling setRegexList");
+
+    var regexes = [];
+    for ( var i = 0; i < 5; i++) {
+        regexes[i] =$('#regex' + (i+1)).val(); 
+    }
+    
+    $.ajax({
+        type : "PUT",
+        url : serverUrl + "/regexExpressions",
+        data : JSON.stringify(regexes),
+        contentType : 'application/json',
+        dataType : "json",
+        beforeSend: function() { $.mobile.showPageLoadingMsg(); }, //Show spinner
+        complete: function() { $.mobile.hidePageLoadingMsg() }, //Hide spinner
+        error : function(data) {
+            alert("Fail: " + data.text);
+            var list = data == null ? [] : (data instanceof Array ? data
+                    : [ data ]);
+        },
+        success : function() {
+            console.log(unixTime() +" Received Successful Answer for setRegexList");
+//            $('#regexFilteringActive').val(stateAsBoolean);
+        }
+    });
+}
 /* ---------------------- delegates ------------------------------ */
 /* pageinit */
 $(document).delegate("#pageConfig", "pageinit", function() {
     currentPage = document.title;
+    $( "#getRegexListBtn" ).bind( "click", function() {
+        getRegexList();
+      });
+    $( "#setRegexListBtn" ).bind( "click", function() {
+        setRegexList();
+    });
     $( "#getMinAgeAutoAckBtn" ).bind( "click", function() {
         getMinAutoAckAge();
-      });
+    });
     $( "#setMinAgeAutoAckBtn" ).bind( "click", function() {
         var newValue = $('#minAgeAutoAck').val();
         var intRegex = /^\d+$/;
         if(intRegex.test(newValue)) {
             setMinAutoAckAge(newValue);
-         } else {
-             alert('Please enter a valid positive integer!');
-         }
+        } else {
+            alert('Please enter a valid positive integer!');
+        }
     });
+    $( "#getRegexFilteringActiveBtn" ).bind( "click", function() {
+        getRegexFilteringActive();
+    });
+    $( "#activateRegexFilteringBtn" ).bind( "click", function() {
+        setRegexFilteringState('ACTIVE');
+    });
+    $( "#deactivateRegexFilteringBtn" ).bind( "click", function() {
+        setRegexFilteringState('INACTIVE');
+    });
+
+    //prefill config page input elements
+    getRegexList();
+    getRegexFilteringActive();
+    getMinAutoAckAge();
+
 });
 $(document).delegate("#pageOpen", "pageinit", function() {
     currentPage = document.title;

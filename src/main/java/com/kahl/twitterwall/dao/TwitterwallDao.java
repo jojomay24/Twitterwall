@@ -14,7 +14,7 @@ public interface TwitterwallDao {
 
     public List<Tweet> getTweetsByFilter(long minTweetId, int ackState, int maxResults, int offset);
 
-    public List<Tweet> getTweetsOlderThan(Date date);
+    public List<Tweet> getOpenTweetsOlderThan(Date date);
 
     public int getTotalNrOfTweetsByFilter(long minTweetId, int ackState);
 

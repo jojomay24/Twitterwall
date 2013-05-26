@@ -26,6 +26,8 @@ public class Twitterwall {
     public static boolean GRAB_TWEETS = false;
     public static boolean AUTOACK_TWEETS = true;
     public static boolean START_WEB_SERVER = true;
+    public static boolean REGEX_CHECK_ACTIVE = false;
+
 
     public static int STATE_OPEN  = 0;
     public static int STATE_ACKED  = 1;

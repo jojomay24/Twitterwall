@@ -107,7 +107,7 @@ public class TwitterwallDaoImpl implements TwitterwallDao {
     }
 
     @Override
-    public List<Tweet> getTweetsOlderThan(Date date) {
+    public List<Tweet> getOpenTweetsOlderThan(Date date) {
         List<Tweet> resultList = new ArrayList<Tweet>();
         Session session = sessionFactory.openSession();
 

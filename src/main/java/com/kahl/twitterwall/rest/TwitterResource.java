@@ -18,18 +18,20 @@ import org.apache.log4j.Logger;
 import com.kahl.twitterwall.Twitterwall;
 import com.kahl.twitterwall.entity.Tweet;
 import com.kahl.twitterwall.entity.TweetsTransferObject;
+import com.kahl.twitterwall.service.RegexCheckService;
 import com.kahl.twitterwall.service.TwitterService;
 
 @Path("/twitter")
 public class TwitterResource {
 
     private Logger log = Logger.getLogger(TwitterResource.class);
+    private TwitterService twitterService;
+    private RegexCheckService regexService;
 
     public TwitterResource() {
         twitterService = (TwitterService) Twitterwall.ctx.getBean("twitterServiceImpl");
+        regexService = (RegexCheckService) Twitterwall.ctx.getBean("regexCheckServiceImpl");
     }
-
-    private TwitterService twitterService;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -131,5 +133,57 @@ public class TwitterResource {
 
         return;
     }
+
+    @GET
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Path("/regexFilteringActive")
+    public Response getRegexFilteringActive()
+    {
+        log.info("regexFilteringActive called. Returning:" + Twitterwall.REGEX_CHECK_ACTIVE);
+
+        return Response
+                .status(200)
+                .entity(Twitterwall.REGEX_CHECK_ACTIVE).build();
+    }
+
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/regexFilteringActive")
+    public Response setRegexFilteringActive(boolean active)
+    {
+        log.info("setRegexFilteringActive called with avtive: " + active);
+        Twitterwall.REGEX_CHECK_ACTIVE = active;
+
+        return Response
+                .status(200).build();
+    }
+
+    @GET
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Path("/regexExpressions")
+    public Response getRegexExpressions()
+    {
+        log.info("getRegexExpressions called.");
+        List<String> regexList = regexService.getRegexList();
+
+        return Response
+                .status(200)
+                .entity(regexList).build();
+    }
+
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/regexExpressions")
+    public Response setRegexExpressions(List<String> regexList)
+    {
+        log.info("setRegexExpressions called with regexList: " + regexList);
+        regexService.setRegexList(regexList);
+
+        return Response
+                .status(200).build();
+    }
+
+
+
 
 }
