@@ -279,12 +279,12 @@ $(document).delegate("#pageConfig", "pageinit", function() {
     $( "#deactivateRegexFilteringBtn" ).bind( "click", function() {
         setRegexFilteringState('INACTIVE');
     });
-
-    //prefill config page input elements
-    getRegexList();
-    getRegexFilteringActive();
-    getMinAutoAckAge();
-
+});
+$(document).delegate("#pageConfig", "pagebeforeshow", function() {
+	//prefill config page input elements
+	getRegexList();
+	getRegexFilteringActive();
+	getMinAutoAckAge();
 });
 $(document).delegate("#pageOpen", "pageinit", function() {
     currentPage = document.title;
