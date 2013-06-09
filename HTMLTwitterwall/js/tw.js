@@ -281,18 +281,46 @@ function validateTweetItem(item) {
 
 function constructTweetsListItem(item) {
 //    console.log(item.tweetId);
+
+
+	var text = item.text;
+//	text = styleUrl(text);
+	text = escapeHtml(text);
+	text = styleAt(text);
+	text = styleHashTag(text);
+
     var tweetHtml= "";
-    tweetHtml += '<div style="display:none;">';
-    tweetHtml += '<input type="hidden" value="' + item.tweetId + '" class="tweetId" />';
-    tweetHtml += '<img src="' + item.twitterUser.profileImageUrl + '"></img>';
-    tweetHtml += '<p><strong>' + item.twitterUser.name + '</strong> '
+    tweetHtml += '<div  style="display:none;">';
+    tweetHtml += '<div class="bubble">';
+    tweetHtml += '<p class="tweetText" style="white-space: normal !important;">' + text + '</p>';
+    tweetHtml += '</div>';
+
+    tweetHtml += '<img class="authorImage" src="' + escapeHtml(item.twitterUser.profileImageUrl) + '"></img>';
+    tweetHtml += '<div class="authorInfo" style="display: block-inline">';
+    tweetHtml += '<p><strong>' + item.twitterUser.name + '</strong><br>'
   + formattedDate(new Date(item.createdAt))
-  + ' </p><p style="white-space: normal !important;">' + item.text
-  + '</p>';
+  + ' </p>';
+    tweetHtml += '</div>';
     tweetHtml += '</div>';
     
+    tweetHtml += '<input type="hidden" value="' + item.tweetId + '" class="tweetId" />';
     return tweetHtml;
 }
+
+function styleAt(t) {
+	return t.replace(/\s*(@[\w|\d]*)/gi, '<span class="styleAt">&nbsp;\$1</span>');
+}
+
+function styleHashTag(t) {
+	return t.replace(/\s(#[\w|\d]*)/gi, '<span class="styleHashTag">&nbsp;\$1</span>');
+}
+
+function styleUrl(t) {
+	var urlPattern = new RegExp("(http|https)://[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:/~+#-]*[\w@?^=%&amp;/~+#-])?")
+	return t.replace(/((http|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?)/gi, '<span style="color: green;">&nbsp;\$1</span>');
+}
+
+
 
 var m_names = new Array("Januar", "Februar", "M&auml;rz", 
         "April", "Mai", "Juni", "Juli", "August", "September", 
@@ -304,6 +332,21 @@ function formattedDate(d) {
     var curr_year = d.getFullYear();
     return (d.getHours() +  ":" + d.getSeconds() + " Uhr, " + curr_date + ". " + m_names[curr_month] + " " + curr_year);
 }
+
+var htmlEscapeMap = {
+	    "&": "&amp;",
+	    "<": "&lt;",
+	    ">": "&gt;",
+	    '"': '&quot;',
+	    "'": '&#39;',
+	    "/": '&#x2F;'
+	  };
+
+function escapeHtml(string) {
+    return String(string).replace(/[&<>"'\/]/g, function (s) {
+      return htmlEscapeMap[s];
+    });
+  }
 
 
 

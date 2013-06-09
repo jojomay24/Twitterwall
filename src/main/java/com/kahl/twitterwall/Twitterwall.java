@@ -23,7 +23,7 @@ public class Twitterwall {
     public final static int AUTO_ACK_TWEETS_INTERVAL = 6000;
 
     /** Date should be formatted as YYYY-MM-DD */
-    public final static String TWEETS_SEARCH_EARLIEST_DATE = "2013-06-03";
+    public final static String TWEETS_SEARCH_EARLIEST_DATE = "2013-06-08";
 
     /** switches */
     public static boolean GRAB_TWEETS = false;

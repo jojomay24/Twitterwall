@@ -1,5 +1,87 @@
 
 
+body {
+    font-family: Arial;
+}
+
+
+body {
+    background-image: url(images/bg.gif);
+    color: black;
+    font: 14px/20px Helvetica,Arial,Tahoma,Verdana,sans-serif;
+}
+
+#tweetTable {
+    margin-top: auto;
+    margin-bottom: auto;
+    vertical-align: center;
+	
+    box-shadow: 3px 3px 8px 0 #000000 !important;
+    height: 750px !important;
+    padding-left: 15px !important;
+    width: 920px;
+	overflow: hidden;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.bubble {
+    background: none repeat scroll 0 0 #FFFFFF;
+    color: #000000;
+    padding: 10px;
+    background-image: -moz-linear-gradient(center bottom , #AEB7F5 31%, #78A6CF 66%) !important;
+    border-radius: 30px 30px 30px 30px !important;
+    box-shadow: 10px 10px 10px 0 #444444 !important;
+    height: 100px;
+    width: 260px;
+}
+
+#tweetTable p.tweetText {
+	margin-top: 5px;
+    height: 105px;
+    text-align: left;
+}
+
+#tweetTable .bubble p {
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 2px;
+    -moz-hyphens: auto;
+/*     height: 100px; */
+    overflow: hidden;
+    text-align: center;
+    width:  250px;
+    height: 100px;
+}
+
+.authorImage {
+	float:left;
+	margin-top: 15px;
+	margin-left: 20px;
+}
+
+.authorInfo {
+	float:left;
+	margin-top: auto; 
+	margin-left: 10px;
+}
+
+.styleAt {
+	text-shadow: 0.1em 0.1em 0.1em #FF8080;
+}
+
+.styleHashTag {
+	text-shadow: 0.1em 0.1em 0.1em 	#3333FF;
+}
+
+
+
+    
+
+
+
 html,body {
     height: 100%;
  }
+ 
+ 

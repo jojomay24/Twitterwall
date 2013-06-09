@@ -24,8 +24,8 @@ public class GrizzlyServer implements Runnable{
     }
 
     private static URI getBaseURI() {
-//        return UriBuilder.fromUri("http://localhost/").port(9998).build();
-        return UriBuilder.fromUri("http://192.168.1.52/").port(9998).build();
+        return UriBuilder.fromUri("http://localhost/").port(9998).build();
+//        return UriBuilder.fromUri("http://192.168.1.52/").port(9998).build();
 //        return UriBuilder.fromUri("http://217.110.29.210/").port(9998).build();
     }
 
