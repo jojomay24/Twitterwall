@@ -14,11 +14,9 @@ public class RegexCheckServiceImpl implements RegexCheckService {
 
     private Logger log = Logger.getLogger(RegexCheckServiceImpl.class);
 
-    private List<String> regexExpressions = new ArrayList<String>();
-
     @Override
     public boolean matchesAutoBlockRegex(Tweet tweet) {
-        for (String regex : regexExpressions) {
+        for (String regex : Twitterwall.REGEX_EXPRESSIONS) {
             boolean isMatching = tweet.getText().toLowerCase().matches(regex);
             if (isMatching) {
                 return true;
@@ -41,12 +39,12 @@ public class RegexCheckServiceImpl implements RegexCheckService {
 
     @Override
     public void setRegexList(List<String> regexList) {
-        regexExpressions = regexList;
+        Twitterwall.REGEX_EXPRESSIONS = regexList;
     }
 
     @Override
     public List<String> getRegexList() {
-        return regexExpressions;
+        return Twitterwall.REGEX_EXPRESSIONS;
     }
 
 

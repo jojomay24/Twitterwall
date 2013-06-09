@@ -90,9 +90,7 @@ function getTweetsFromServer(list, state, offset) {
         beforeSend: function() { $.mobile.showPageLoadingMsg(); }, //Show spinner
         complete: function() { $.mobile.hidePageLoadingMsg() }, //Hide spinner
         error : function(data) {
-            alert("Fail: " + data.text);
-            var list = data == null ? [] : (data instanceof Array ? data
-                    : [ data ]);
+            console.log("Fail: " + data.text);
         },
         success : function(data) {
             console.log(unixTime() +" Received Answer for getTweetsFromServer:" + data);
@@ -118,7 +116,7 @@ function getMinAutoAckAge() {
         beforeSend: function() { $.mobile.showPageLoadingMsg(); }, //Show spinner
         complete: function() { $.mobile.hidePageLoadingMsg() }, //Hide spinner
         error : function(data) {
-            alert("Fail: " + data.text);
+            console.log("Fail: " + data.text);
             var list = data == null ? [] : (data instanceof Array ? data
                     : [ data ]);
         },
@@ -141,7 +139,7 @@ function setMinAutoAckAge(age) {
         beforeSend: function() { $.mobile.showPageLoadingMsg(); }, //Show spinner
         complete: function() { $.mobile.hidePageLoadingMsg() }, //Hide spinner
         error : function(data) {
-            alert("Fail: " + data.text);
+            alert("Failed setting MinAutoAckAge: " + data.text);
             var list = data == null ? [] : (data instanceof Array ? data
                     : [ data ]);
         },
@@ -162,7 +160,7 @@ function getRegexFilteringActive() {
         beforeSend: function() { $.mobile.showPageLoadingMsg(); }, //Show spinner
         complete: function() { $.mobile.hidePageLoadingMsg() }, //Hide spinner
         error : function(data) {
-            alert("Fail: " + data.text);
+            console.log("Fail: " + data.text);
             var list = data == null ? [] : (data instanceof Array ? data
                     : [ data ]);
         },
@@ -187,7 +185,7 @@ function setRegexFilteringState(state) {
         beforeSend: function() { $.mobile.showPageLoadingMsg(); }, //Show spinner
         complete: function() { $.mobile.hidePageLoadingMsg() }, //Hide spinner
         error : function(data) {
-            alert("Fail: " + data.text);
+            console.log("Fail: " + data.text);
             var list = data == null ? [] : (data instanceof Array ? data
                     : [ data ]);
         },
@@ -209,7 +207,7 @@ function getRegexList() {
         beforeSend: function() { $.mobile.showPageLoadingMsg(); }, //Show spinner
         complete: function() { $.mobile.hidePageLoadingMsg() }, //Hide spinner
         error : function(data) {
-            alert("Fail: " + data.text);
+            console.log("Fail: " + data.text);
             var list = data == null ? [] : (data instanceof Array ? data
                     : [ data ]);
         },
@@ -240,7 +238,7 @@ function setRegexList() {
         beforeSend: function() { $.mobile.showPageLoadingMsg(); }, //Show spinner
         complete: function() { $.mobile.hidePageLoadingMsg() }, //Hide spinner
         error : function(data) {
-            alert("Fail: " + data.text);
+            console.log("Fail: " + data.text);
             var list = data == null ? [] : (data instanceof Array ? data
                     : [ data ]);
         },

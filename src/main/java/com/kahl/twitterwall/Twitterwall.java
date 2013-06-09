@@ -1,7 +1,10 @@
 package com.kahl.twitterwall;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
@@ -14,26 +17,30 @@ public class Twitterwall {
     public static String SEARCH_STRING = "#fcb";
 
     /** nr of seconds between querying Twitter for new results */
-    public final static int TWEETS_SEARCH_INTERVAL = 15;
+    public final static int TWEETS_SEARCH_INTERVAL = 60;
 
     /** nr of seconds between auto ack tweets runs */
-    public final static int AUTO_ACK_TWEETS_INTERVAL = 25;
+    public final static int AUTO_ACK_TWEETS_INTERVAL = 6000;
 
     /** Date should be formatted as YYYY-MM-DD */
-    public final static String TWEETS_SEARCH_EARLIEST_DATE = "2013-04-04";
+    public final static String TWEETS_SEARCH_EARLIEST_DATE = "2013-06-03";
 
     /** switches */
     public static boolean GRAB_TWEETS = false;
-    public static boolean AUTOACK_TWEETS = true;
+    public static boolean AUTOACK_TWEETS = false;
     public static boolean START_WEB_SERVER = true;
     public static boolean REGEX_CHECK_ACTIVE = false;
+
+    public static List<String> REGEX_EXPRESSIONS = new ArrayList<String>(
+            Arrays.asList(".*test*", ""));
 
 
     public static int STATE_OPEN  = 0;
     public static int STATE_ACKED  = 1;
     public static int STATE_BLOCKED  = 2;
 
-    public static int MIN_TWEET_AGE_FOR_AUTO_ACK = 3600 * 24 * 365;
+//    public static int MIN_TWEET_AGE_FOR_AUTO_ACK = 3600 * 24 * 365;
+    public static int MIN_TWEET_AGE_FOR_AUTO_ACK = 60;
 
     private Logger log = Logger.getLogger(Twitterwall.class);
 

@@ -112,7 +112,7 @@ public class TwitterwallDaoImpl implements TwitterwallDao {
         Session session = sessionFactory.openSession();
 
         Criteria c = session.createCriteria(Tweet.class);
-        c.setMaxResults(3);
+        c.setMaxResults(300);
         c.add(Restrictions.eq("ackState", 0));
         c.add(Restrictions.le("createdAt", date));
 

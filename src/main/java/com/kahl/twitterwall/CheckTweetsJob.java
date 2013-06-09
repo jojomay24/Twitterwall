@@ -54,6 +54,7 @@ public class CheckTweetsJob implements Job {
         try {
             Query query = buildQuery();
             log.debug("Query: " + query.toString());
+            log.info("Grabbing tweets from twitter");
             TwitterService ts = (TwitterService) Twitterwall.ctx.getBean("twitterServiceImpl");
             RegexCheckService regexService = (RegexCheckService) Twitterwall.ctx.getBean("regexCheckServiceImpl");
 
@@ -67,6 +68,7 @@ public class CheckTweetsJob implements Job {
 
                     if (regexService.isActive() && regexService.matchesAutoBlockRegex(tweetObj)) {
                         tweetObj.setAckState(Twitterwall.STATE_BLOCKED);
+                        log.info("Blocked tweet because of regexBlocking! Tweet: " + tweetObj.getText());
                     }
 
                     long tweetIdAsLong = Long.parseLong(tweetObj.getTweetId());
@@ -90,12 +92,12 @@ public class CheckTweetsJob implements Job {
     }
 
     private Tweet createTweetEntity(Status tweet) {
-        log.info("Creating User " + tweet.getUser().getScreenName() + " - " + tweet.getUser().getProfileImageURL());
+        log.debug("Creating User " + tweet.getUser().getScreenName() + " - " + tweet.getUser().getProfileImageURL());
         TwitterUser twitterUser = new TwitterUser();
         twitterUser.setName(tweet.getUser().getScreenName());
         twitterUser.setProfileImageUrl(tweet.getUser().getProfileImageURL());
 
-        log.info("Creating Tweet: " + tweet.getText());
+        log.debug("Creating Tweet: " + tweet.getText());
         Tweet tweetObj = new Tweet();
         tweetObj.setAckState(0);
         tweetObj.setText(tweet.getText());
