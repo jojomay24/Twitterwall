@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/jojomay24/Twitterwall.png?branch=master)](https://travis-ci.org/jojomay24/)
 Twitterwall
 ===========
 A simple Twitterwall solution with smartphone management capabilities by jojomay3@gmx.de
